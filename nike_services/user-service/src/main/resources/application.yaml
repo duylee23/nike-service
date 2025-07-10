@@ -1,0 +1,16 @@
+spring:
+  cloudinary:
+    cloud_name: du1cnvkkt
+    api_key: 388428358871528
+    api_secret: gGQGhOvK1ELwUfNAupFyetcVdvo
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: duylee233
+    url: jdbc:mysql://localhost:3306/auth
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true

@@ -1,0 +1,48 @@
+name: nike_authentic
+services:
+  web:
+    image: nike_authentic:latest
+    build:
+      context: ./nike-web
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "4200:4200"  
+    volumes:
+      - ./nike-web:/app 
+      - /app/node_modules 
+    stdin_open: true
+    tty: true
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: duylee233
+      MYSQL_ROOT_PASSWORD: duylee233
+      MYSQL_DATABASE: product
+    ports: 
+      - "6603:3306"
+    volumes: 
+      - mysql_data:/var/lib/mysql
+    networks: 
+      - mynetwork
+
+  product-service: 
+    build:
+      context: ./nike_services
+      dockerfile: product-service/Dockerfile
+    depends_on: 
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: duylee233
+    networks:
+      - mynetwork
+
+volumes: 
+  mysql_data:
+networks:
+  mynetwork:       
