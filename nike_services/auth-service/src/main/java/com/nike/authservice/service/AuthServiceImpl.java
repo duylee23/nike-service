@@ -4,6 +4,7 @@ import com.nike.authservice.dto.AuthRequest;
 import com.nike.authservice.dto.AuthResponse;
 import com.nike.authservice.dto.request.IntrospectRequest;
 import com.nike.authservice.dto.response.IntrospectResponse;
+import com.nike.authservice.dto.response.UserResponse;
 import com.nike.authservice.entity.User;
 import com.nike.authservice.exception.AppException;
 import com.nike.authservice.exception.ErrorCode;
@@ -44,22 +45,32 @@ public class AuthServiceImpl implements AuthService {
     @NonFinal
     @Value("${jwt.refreshable-duration}")
     protected long REFRESHABLE_DURATION;
+
     UserRepository userRepository;
 
     @Override
     public AuthResponse authenticate(AuthRequest authRequest) {
         var user = this.userRepository.findByUsername(authRequest.getUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_CREDENTIALS));
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         boolean matches = passwordEncoder.matches(authRequest.getPassword(), user.getPassword());
         if (!matches) {
             throw new AppException(ErrorCode.PASSWORD_INVALID);
         }
+
         var token = generateToken(user);
+
+        var userResponse = UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .role(user.getRoles())
+                .username(user.getUsername())
+                .build();
 
         return AuthResponse.builder()
                 .token(token)
                 .isAuthenticated(true)
+                .user(userResponse)
                 .build();
     }
 
