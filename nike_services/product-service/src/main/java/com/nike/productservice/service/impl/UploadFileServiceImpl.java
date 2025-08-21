@@ -1,12 +1,11 @@
-package com.nike.productservice.service;
+package com.nike.productservice.service.impl;
 
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.nike.productservice.dto.ProductDTO;
+import com.nike.productservice.service.UploadFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

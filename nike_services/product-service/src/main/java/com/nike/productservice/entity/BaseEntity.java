@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -21,21 +21,21 @@ public class BaseEntity implements Serializable {
     private Long id;
 
     @Column(updatable = false)
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
     private Boolean isDeleted;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = new Date(System.currentTimeMillis());
+        this.createdAt = new Timestamp(System.currentTimeMillis());
         this.updatedAt = this.createdAt;
         this.isDeleted = false;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedAt = new Date(System.currentTimeMillis());
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 }

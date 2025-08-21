@@ -13,6 +13,7 @@ public class ProductDTO {
     private Double price;
     private String image;
     private Long categoryId;
+    private Long brandId;
     private String status;
     private Integer starCount;
     private Integer pageIndex;
